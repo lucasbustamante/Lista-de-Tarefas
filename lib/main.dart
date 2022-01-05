@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:lista_de_tarefas/Theme/color.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 
@@ -26,26 +27,34 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: SecondaryColor,
       appBar: AppBar(
         title: Text('Lista de Tarefas'),
         centerTitle: true,
+        backgroundColor: PrimaryColor,
       ),
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.fromLTRB(17, 1 , 7, 1),
+            padding: EdgeInsets.fromLTRB(17, 1 , 10, 1),
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
                         labelText: "Nova Tarefa",
-                        labelStyle: TextStyle(color: Colors.black)
+                        labelStyle: TextStyle(color: DarkFontColor)
                       ),
                     ),
                   ),
-                  ElevatedButton(onPressed: (){}, child: Text(
-                    "ADD",style: TextStyle(color: Colors.black),),)
+                  ElevatedButton(
+                    onPressed: (){}, child: Text(
+                    "ADD",
+                  ),
+                    style: ElevatedButton.styleFrom(
+                      primary: PrimaryColor// foreground
+                    ),
+                  ),
                 ],
               ),
           )
