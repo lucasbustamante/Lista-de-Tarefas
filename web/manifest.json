@@ -1,6 +1,6 @@
 {
-    "name": "lista_de_tarefas",
-    "short_name": "lista_de_tarefas",
+    "name": "lista_de_terefas",
+    "short_name": "lista_de_terefas",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

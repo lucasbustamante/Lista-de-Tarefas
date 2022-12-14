@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.lista_de_tarefas">
+    package="com.example.lista_de_terefas">
    <application
-        android:label="lista_de_tarefas"
+        android:label="lista_de_terefas"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
