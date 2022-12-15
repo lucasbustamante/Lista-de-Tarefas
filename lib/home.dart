@@ -12,6 +12,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   List _listaTarefas = [];
+  TextEditingController _controllerTarefa = TextEditingController();
 
  Future<File> _getFile () async{
 
@@ -24,14 +25,19 @@ class _HomeState extends State<Home> {
 
    var arquivo = await _getFile();
 
-
-    Map<String, dynamic> tarefa = Map();
-    tarefa["titulo"] = "Ir ao mercado";
-    tarefa["Realizada"] = false;
-    _listaTarefas.add(tarefa);
-
     String dados = jsonEncode(_listaTarefas);
     arquivo.writeAsString(dados);
+  }
+
+  _salvarTarefa(){
+
+    Map<String, dynamic> tarefa = Map();
+    tarefa["titulo"] = _controllerTarefa.text;
+    tarefa["realizada"] = false;
+    _salvarArquivo();
+    setState(() {
+      _listaTarefas.add(tarefa);
+    });
   }
 
   _lerArquivo()async{
@@ -66,8 +72,16 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         backgroundColor: Colors.purple,
       ),
-      body: ListView.builder(itemBuilder: (context, index){
-        return ListTile(
+      body: ListView.builder(
+        itemBuilder: (context, index){
+        return CheckboxListTile(
+          onChanged: (valorAlterado){
+            setState(() {
+              _listaTarefas[index]["realizada"] = valorAlterado;
+            });
+            _salvarArquivo();
+          },
+          value: _listaTarefas[index]["realizada"],
           title:Text( _listaTarefas[index]["titulo"]),
         );
       },
@@ -79,6 +93,7 @@ class _HomeState extends State<Home> {
             return AlertDialog(
               title: Text('Adicionar Tarefa'),
               content: TextField(
+                controller: _controllerTarefa,
                 decoration: InputDecoration(
                   hintText: 'Digite a terefa',
                       border: OutlineInputBorder(
@@ -99,10 +114,13 @@ class _HomeState extends State<Home> {
               actions: [
                 TextButton(onPressed: (){
                   Navigator.pop(context);
+                  _controllerTarefa.clear();
                 }, child: Text('Cancelar')),
                TextButton(onPressed: (){
+                 _salvarTarefa();
                  Navigator.pop(context);
-               }, child: Text('Salvar'))
+                 _controllerTarefa.clear();
+               }, child: Text('Salvar')),
               ],
 
             );
