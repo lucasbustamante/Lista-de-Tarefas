@@ -129,7 +129,7 @@ child: ListTile(
 title: Text(item);
 direction: // direções para onde arrastar o widget,
 backgound: // aqui podemos definir um widget, exemplo, um container vermelho,
-assim ele pode ser o fujndo do widget quando arrastado para o lado
+//assim ele pode ser o fujndo do widget quando arrastado para o lado
 }
 )
 ```
