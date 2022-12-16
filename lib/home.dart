@@ -60,11 +60,41 @@ class _HomeState extends State<Home> {
     });
   }
 
+  Widget criarItemLista(context, index){
+   final item = _listaTarefas[index]['titulo'];
+   return Dismissible(
+     onDismissed: (direction){
+         _listaTarefas.removeAt(index);
+       _salvarArquivo();
+     },
+     direction: DismissDirection.endToStart,
+       background: Container(
+         padding: EdgeInsets.all(16),
+         child: Row(mainAxisAlignment: MainAxisAlignment.end,
+           children: [
+             Icon(Icons.delete, color: Colors.white,)
+           ],
+         ),
+         color: Colors.red,
+       ),
+       key: Key(item),
+       child: ListTile(
+         title: CheckboxListTile(
+           onChanged: (valorAlterado){
+             setState(() {
+               _listaTarefas[index]["realizada"] = valorAlterado;
+             });
+             _salvarArquivo();
+           },
+           value: _listaTarefas[index]["realizada"],
+           title:Text( _listaTarefas[index]["titulo"]),
+         ),
+       ));
+  }
+
   @override
   Widget build(BuildContext context) {
 
-   //_salvarArquivo();
-    print("itens: " + _listaTarefas.toString());
 
     return Scaffold(
       appBar: AppBar(
@@ -73,18 +103,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.purple,
       ),
       body: ListView.builder(
-        itemBuilder: (context, index){
-        return CheckboxListTile(
-          onChanged: (valorAlterado){
-            setState(() {
-              _listaTarefas[index]["realizada"] = valorAlterado;
-            });
-            _salvarArquivo();
-          },
-          value: _listaTarefas[index]["realizada"],
-          title:Text( _listaTarefas[index]["titulo"]),
-        );
-      },
+        itemBuilder: criarItemLista,
       itemCount: _listaTarefas.length,),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),

@@ -107,3 +107,108 @@ _listaTarefas.add(tarefa);
 _salvarArquivo();
 }
 ```
+
+#### ListView Dicas
+
+Pag. 12
+
+Dentro do ListView.builder podemos adicionar CheckBoxListTile
+
+Podemos usar também o Dismissible
+Ex:
+
+```dart
+ListView.builder(
+itemCount: _listaTarefas.length,
+itemBuilder: (context, index){
+final item = _lista[index];
+
+return Dismissible(
+key: Key(item),
+child: ListTile(
+title: Text(item);
+direction: // direções para onde arrastar o widget,
+backgound: // aqui podemos definir um widget, exemplo, um container vermelho,
+assim ele pode ser o fujndo do widget quando arrastado para o lado
+}
+)
+```
+Podemos definir um segundo background usando: SecondaryBackgound
+Ex:
+
+```dart
+backgound: Container(
+color: Colors.green,
+padding: EdgeInsets.all(16),
+child: Row(mainAxisAlignment: MainAxisAlignment.start,
+children: [
+  Icon(
+Icons.edit, 
+color: Colors.white,
+)
+]
+)
+),
+secondaryBackgound: Container(
+color: Colors.red,
+padding: EdgeInsets.all(16),
+child: Row(mainAxisAlignment: MainAxisAlignment.end,
+children: [
+Icon(
+Icons.delete,
+color: Colors.white,
+)
+]
+)
+)
+```
+Pag. 13
+E para saber qual deslizamento está sendo feito usamos.
+Ex:
+```dart
+onDismissed: (direction){
+  if(diretion == DismissiDiretion.endToStart){
+    
+}else if(diretion == DismissiDiretion.startToEnd){
+    setState(({
+  _lista.removeAT(index)
+}))
+}
+}
+```
+
+E ainda podemos compactar o código criando um metodo
+Ex: 
+```dart
+Widget criarItemLista(context, index){
+   final item = _listaTarefas[index]['titulo'];
+   return Dismissible(
+     onDismissed: (direction){
+         _listaTarefas.removeAt(index);
+       _salvarArquivo();
+     },
+     direction: DismissDirection.endToStart,
+       background: Container(
+         padding: EdgeInsets.all(16),
+         child: Row(mainAxisAlignment: MainAxisAlignment.end,
+           children: [
+             Icon(Icons.delete, color: Colors.white,)
+           ],
+         ),
+         color: Colors.red,
+       ),
+       key: Key(item),
+       child: ListTile(
+         title: CheckboxListTile(
+           onChanged: (valorAlterado){
+             setState(() {
+               _listaTarefas[index]["realizada"] = valorAlterado;
+             });
+             _salvarArquivo();
+           },
+           value: _listaTarefas[index]["realizada"],
+           title:Text( _listaTarefas[index]["titulo"]),
+         ),
+       ));
+  }
+```
